@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script
+  src = "https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity = "sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin = "anonymous"></script>
+  <title>{{brand}}: Figures</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
+  <link rel="icon"
+      type="image/png"
+      href="/static/assets/icon.png">
+
+      <meta name="description" content='The interactive list of celebrities, politicians, and public figures whose deleted tweets are monitored by {{brand}}.'>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="static/css/bootstrap.min.css">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <meta name="viewport" content="initial-scale=1">
+  <style>
+  .main{
+    margin-top: 100px;
+  }
+  .profile-photo{
+    border-radius: 5px;
+  }
+  h1, h2, h3, h4, h5, h6{
+    display: inline;
+  }
+  #showAll{
+    display: none;
+  }
+  .arvo{
+    font-family: 'Arvo', serif;
+  }
+  </style>
+  <script>
+  function search(){
+    $("#search-button").text("Searching...");
+    $("#showAll").fadeIn();
+    term = $("#searchbar").val();
+    console.log("Searching for '" + term + "'...")
+    $(".figure").each(function( index ) {
+      inside = ""
+      inside += $(this).find(".figure-name").text() + " ";
+      inside += $(this).find(".figure-handle").text();
+      if(!inside.toLowerCase().includes(term.toLowerCase())){
+        $(this).hide();
+      }else{
+        $(this).show();
+      }
+    });
+    $("#search-button").text("Search");
+  }
+
+  function showAll(){
+    $(".figure").each(function( index ) {
+      $(this).show();
+    });
+    $("#showAll").fadeOut();
+  }
+
+
+  </script>
+</head>
+<body>
+  {% include "navbar.html" %}
+  <div class="container main">
+    <ol class="breadcrumb">
+      <li class="active">Figures</li>
+    </ol>
+    <h2 id="figures">Monitored Public Figures <small><i>{{len(figures)}} figures sorted alphabetically</i></small></h2>
+    <form onsubmit="search(); return false;" action="#">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search figures" id="searchbar">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="submit" id="search-button">Search</button>
+        </span>
+      </div><!-- /input-group -->
+    </form>
+    <br><button onclick="showAll()" id="showAll" class="btn btn-default">Show All</button>
+    <br><br>
+    {% for figure in figures %}
+    <div class="figure">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <h3>
+            <img class="profile-photo" src="{{figure["profile_image_url"]}}">
+            <a href="{{figure["archive_url"]}}" class="btn btn-primary pull-right">View Archive</a>
+            <a href="{{figure["archive_url"]}}"><span class="figure-name">{{figure["name"]}}</span> <small><span class="figure-handle" href="https://twitter.com/{{figure["screen_name"]}}">@{{figure["screen_name"]}}</span></small></a>
+            {% if figure["deleted_tweets_length"] == 1 %}
+              <small><a href="/tweets?account={{figure["id"]}}&deleted=True"><span class="label label-danger">{{figure["deleted_tweets_length"]}} DELETED TWEET</span></a></small>
+            {% end %}
+            {% if figure["deleted_tweets_length"] > 1 %}
+              <small><a href="/tweets?account={{figure["id"]}}&deleted=True"><span class="label label-danger">{{figure["deleted_tweets_length"]}} DELETED TWEETS</span></a></small>
+            {% end %}
+          </h3>
+        </div>
+      </div>
+    </div>
+    {% end %}
+    {% include "analytics.html" %}
+  </body>
+  </html>

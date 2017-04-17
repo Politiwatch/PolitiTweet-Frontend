@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script
+  src = "https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity = "sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin = "anonymous"></script>
+  <script src="static/js/jquery.json-viewer.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
+  <link rel="icon"
+      type="image/png"
+      href="/static/assets/icon.png">
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  <meta name="description" content="{{brand}}'s archived and deleted tweets of {{figure["name"]}}">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="static/css/bootstrap.min.css">
+  <link href="static/css/jquery.json-viewer.css" rel="stylesheet">
+  <title>{{brand}}: @{{figure["screen_name"]}} tweets</title>
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <meta name="viewport" content="initial-scale=1">
+  <style>
+  .main{
+    margin-top: 100px;
+  }
+  .profile-photo{
+    border-radius: 5px;
+  }
+  .arvo{
+    font-family: 'Arvo', serif;
+  }
+  h1, h2, h3, h4, h5, h6{
+    display: inline;
+  }
+  #rawdata{
+    display: none;
+  }
+  </style>
+  <script>
+
+  function getStableLink(){
+    alert(window.location.href)
+  }
+
+  function search(){
+    $("#qualifier").html("Searching... (this can take a moment, depending on your computer)")
+    $("#search-button").html("Searching...")
+    term = $("#searchbar").val();
+    console.log("Searching for '" + term + "'...")
+    found = 0
+    $("#tweets").fadeOut(searchTerm(term));
+    $("#tweets").fadeIn();
+    $("#qualifier").text("Found " + found + " tweets matching your search.")
+    $("#search-button").text("Search")
+  }
+
+  function searchTerm(){
+    $("body").delay(5).find(".tweet").each(function( index ) {
+      inside = $(this).find(".tweet-text").text();
+      if(!inside.toLowerCase().includes(term.toLowerCase())){
+        $(this).hide();
+      }else{
+        $(this).show();
+        found++;
+      }
+    });
+  }
+
+  function showDeleted(){
+    console.log("showing deleted...")
+    $(".tweet").each(function( index ) {
+      inside = $(this).find(".tweet-deleted").text();
+      if(!inside.toLowerCase().includes("yes")){
+        $(this).hide();
+      }else{
+        $(this).show();
+      }
+    });
+    $("#qualifier").text("Showing only deleted tweets.")
+  }
+
+  function showAll(){
+    console.log("showing all...")
+    $(".tweet").each(function( index ) {
+      $(this).show();
+    });
+    $("#showAll").fadeOut();
+    $("#qualifier").text("Showing all tweets.")
+  }
+  </script>
+</head>
+<body>
+  {% include "navbar.html" %}
+  <div class="container main">
+    <ul class="breadcrumb">
+      <li><a href="/figures">Figures</a></li>
+      <li><a href="/figure?account={{figure["id"]}}">@{{figure["screen_name"]}}</a></li>
+      <li class="active">Tweets</li>
+      <a onclick="getStableLink()" class="btn btn-xs btn-default pull-right">Stable Link</a></li>
+    </ul>
+    <h2 id="tweets">{{title}} <small><i>Sorted Chronologically</i></small></h2>
+    <div class="row">
+      <div class="col-md-8">
+        <form onsubmit="search(); return false;" action="#">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search figures. Warning: first search may be slow!" id="searchbar">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="submit" id="search-button">Search</button>
+            </span>
+          </div><!-- /input-group -->
+        </form>
+      </div>
+      <div class="hidden-md hidden-lg">
+        <br>
+      </div>
+      <div class="col-md-4">
+        <button onclick="showDeleted()" class="btn btn-success">Hide Undeleted</button>
+        <button onclick="showAll()" class="btn btn-success">Hide None</button>
+      </div>
+    </div>
+    <br>
+    <small><i><span id="qualifier">Showing last {{len(statuses)}} tweets</span></i></small>
+    <br>
+    <div id="tweets">
+      {% for status in statuses %}
+      <div class="tweet" id="tweet-{{status["id"]}}">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-md-4">
+                <h4><span class="tweet-text" style="overflow: hidden;">{% apply linkify %}{% raw status["text"] %}{% end %}</span></h4>
+              </div>
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-6">
+                    <strong>Created</strong>
+                    <p><i>{{status["created_at"]}}</i></p>
+                  </div>
+                  <div class="col-md-6">
+                    <strong>Deleted</strong><br>
+                    {% if status["deleted"] %}
+                    <h4><span class="label label-warning tweet-deleted">Yes</span></h4>
+                    {% else %}
+                    <h4><span class="label label-success tweet-deleted">No</span></h4>
+                    {% end %}
+                    <br><br>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <a href="tweet?account={{figure["id"]}}&tweet={{status["id"]}}" class="btn btn-primary">View Full Tweet</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% end %}
+    </div>
+    {% include "analytics.html" %}
+  </body>
+  </html>

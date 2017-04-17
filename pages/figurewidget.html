@@ -1,0 +1,53 @@
+<div class="figure">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <h3>
+        <img class="profile-photo" src="{{figure["profile_image_url"]}}">
+        <a href="https://twitter.com/{{figure["screen_name"]}}">{{figure["name"]}} <small>@{{figure["screen_name"]}}</small></a>
+      </h3>
+      <button onclick="showFullUserdata()" class="btn btn-default pull-right">Toggle Raw Data</button>
+      <div id="rawuserdata"></div>
+      <hr>
+      <div class="row">
+        <div class="col-md-6">
+          <strong>Description</strong>
+          <p><i>{% apply linkify %}{{figure["description"]}}{% end %}</i><p>
+          </div>
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-3">
+                <strong>Followers</strong>
+                <p><i>{{figure["followers_count"]}}</i></p>
+              </div>
+              <div class="col-md-3">
+                <strong>Location</strong>
+                <p><i>{{figure["location"]}}</i></p>
+              </div>
+              <div class="col-md-3" style="overflow: hidden;">
+                <strong>Identifier</strong>
+                <p><i>{{figure["id"]}}</i></p>
+              </div>
+              <div class="col-md-3">
+                <strong>URL</strong>
+                <p><i><a href="{{figure["url"]}}">(go to url)</a></i></p>
+              </div>
+            </div>
+          </div>
+          <hr>
+        </div>
+        <hr>
+        {% if figure["deleted"] %}
+        <p style="color: red;">This account has been deleted.</p>
+        {% else %}
+        <p style="color: green;">This account has not been deleted.</p>
+        {% end %}
+        {% if figure["deleted_tweets_length"] == 1 %}
+        <span class="label label-danger">{{figure["deleted_tweets_length"]}} DELETED TWEET</span>
+        {% end %}
+        {% if figure["deleted_tweets_length"] > 1 %}
+        <span class="label label-danger">{{figure["deleted_tweets_length"]}} DELETED TWEETS</span>
+        {% end %}
+        <a class="btn btn-default pull-right" href="/figure?account={{figure["id"]}}">View in Database</a>
+      </div>
+    </div>
+  </div>

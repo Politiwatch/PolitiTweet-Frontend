@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script
+  src = "https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity = "sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin = "anonymous"></script>
+  <script src="static/js/jquery.json-viewer.js"></script>
+  <link rel="icon"
+      type="image/png"
+      href="/static/assets/icon.png">
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
+
+  <meta name="description" content="{{figure["name"]}} on {{brand}}: deleted tweets, archived statements, and silent retractions.">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="static/css/bootstrap.min.css">
+  <link href="static/css/jquery.json-viewer.css" rel="stylesheet">
+  <title>{{brand}}: @{{figure["screen_name"]}}</title>
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <meta name="viewport" content="initial-scale=1">
+  <style>
+  .main{
+    margin-top: 100px;
+  }
+  .profile-photo{
+    border-radius: 5px;
+  }
+  h1, h2, h3, h4, h5, h6{
+    display: inline;
+  }
+  #rawdata{
+    display: none;
+  }
+  .arvo{
+    font-family: 'Arvo', serif;
+  }
+  </style>
+  <script>
+  function showFullUserdata(){
+    data = {% raw figure["json"] %}
+    $("#rawuserdata").jsonViewer(data);
+    $("#rawuserdata").slideToggle();
+  }
+
+  function getStableLink(){
+    alert(window.location.href)
+  }
+
+  function search(){
+    term = $("#searchbar").val();
+    console.log("Searching for '" + term + "'...")
+    $(".tweet").each(function( index ) {
+      inside = $(this).find(".tweet-text").text();
+      if(!inside.toLowerCase().includes(term.toLowerCase())){
+        $(this).hide();
+      }else{
+        $(this).show();
+      }
+    });
+  }
+
+  function showDeleted(){
+    console.log("showing deleted...")
+    $(".tweet").each(function( index ) {
+      inside = $(this).find(".tweet-deleted").text();
+      if(!inside.toLowerCase().includes("yes")){
+        $(this).hide();
+      }else{
+        $(this).show();
+      }
+    });
+  }
+
+  function showAll(){
+    console.log("showing all...")
+    $(".tweet").each(function( index ) {
+      $(this).show();
+    });
+    $("#showAll").fadeOut();
+  }
+  </script>
+</head>
+<body>
+  {% include "navbar.html" %}
+  <div class="container main">
+    <ul class="breadcrumb">
+      <li><a href="/figures">Figures</a></li>
+      <li class="active">@{{figure["screen_name"]}}</li>
+      <a onclick="getStableLink()" class="btn btn-xs btn-default pull-right">Stable Link</a></li>
+    </ul>
+    {% include "figurewidget.html" %}
+      <hr>
+      <div class="row">
+        <div class="col-md-3">
+          <a href="tweets?account={{figure["id"]}}" class="btn btn-xl btn-success">All Archived Tweets</a>&nbsp;
+          <br><br>
+        </div>
+        <div class="col-md-3">
+          <a href="tweets?account={{figure["id"]}}&last=50" class="btn btn-xl btn-success">Last 50 Archived Tweets</a>&nbsp;
+          <br><br>
+        </div>
+        <div class="col-md-3">
+          <a href="tweets?account={{figure["id"]}}&last=100" class="btn btn-xl btn-success">Last 100 Archived Tweets</a>&nbsp;
+          <br><br>
+        </div>
+        <div class="col-md-3">
+          {% if figure["deleted_tweets_length"] > 0 %}
+          <a href="tweets?account={{figure["id"]}}&deleted=True" class="btn btn-xl btn-warning">View Deleted Tweets</a>
+          {% end %}
+        </div>
+      </div>
+    </div>
+    {% include "analytics.html" %}
+  </body>
+  </html>
