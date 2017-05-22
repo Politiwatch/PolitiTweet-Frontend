@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import tornado.ioloop
 import tornado.web
 import json
@@ -5,10 +7,10 @@ import database
 import cache
 from operator import itemgetter
 import httplib
-import html.parser
+import HTMLParser
 
 def unescape(text):
-    return html.parser.HTMLParser().unescape(text)
+    return HTMLParser.HTMLParser().unescape(text)
 
 def render(tweets):
     rendered = []
