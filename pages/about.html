@@ -1,93 +1,84 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <script
-  src = "https://code.jquery.com/jquery-3.1.1.min.js"
-  integrity = "sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-  crossorigin = "anonymous"></script>
-  <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
+    {% include "head.html" %}
+    <title>{{brand}}: About</title>
+    <meta name="description" content='{{brand}} monitors public figures online to promote public transparency and accountability.'>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-  <script src="static/js/jquery.json-viewer.js"></script>
-
-  <link rel="icon"
-      type="image/png"
-      href="/static/assets/icon.png">
-
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-  <!-- Optional theme -->
-  <link rel="stylesheet" href="static/css/bootstrap.min.css">
-  <link href="static/css/jquery.json-viewer.css" rel="stylesheet">
-  <title>{{brand}}: about</title>
-
-  <meta name="description" content='{{brand}} monitors public figures online to promote public transparency and accountability.'>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-  <!-- Latest compiled and minified JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-  <meta name="viewport" content="initial-scale=1">
-  <style>
-  .main{
-    margin-top: 100px;
-  }
-  .profile-photo{
-    border-radius: 5px;
-  }
-  h1, h2, h3, h4, h5, h6{
-    display: inline;
-  }
-  .arvo{
-    font-family: 'Arvo', serif;
-  }
-  </style>
 </head>
+
 <body>
-  {% include "navbar.html" %}
-  <div class="container main">
-      <h1>About {{brand}}</h1>
-      <hr>
-      <p>{{brand}} is a <a href="//politiwatch.org" class="arvo">Politiwatch</a> initiative.</p>
-      <p>{{brand}} monitors public (and primarily political) figures online, creating a stable and persistent database that can be referred to for news articles, citations, and other reference. It's also fun, because its <a href='/deleted'>deleted</a> section can read like a tabloid.</p>
-      <p>One primary advantage of {{brand}} is that its database remains intact when, for example, a tweet is deleted (which <a href="https://twitter.com/realDonaldTrump">Donald Trump </a> does frequently).</p>
-      <br>
-      <h2>Database</h2>
-      <hr>
-      <p>{{brand}} monitors <strong>{{count}}</strong> public figures. Its database contains over <strong>one million</strong> tweets.</p>
-      <br>
-      <h2>Advantages</h2>
-      <hr>
-      <ul>
-        <li>Stable links that will not change, ideal for citing tweets in articles.</li>
-        <li>In-depth statistics available about every figure and tweet.</li>
-        <li>Historical figure data available.</li>
-        <li>Tweets in the database persist, even when they are deleted from Twitter (often for being too contentious).</li>
-        <li>Tweets are archived less than a second after they are created.</li>
-      </ul>
-      <br>
-      <h2>Infrastructure</h2>
-      <hr>
-      <p>The back-end {{brand}} database is managed by a Python daemon, is stored in JSON, and is stored in a filesystem. It is backed up weekly.</p>
-      <p>The {{brand}} infrastructure has three parts: <strong>webserver</strong>, <strong>scanner</strong>, and <strong>streamer</strong>.</p>
-      <p>Its servers are located in <strong>New York City</strong>.</p>
-      <br>
-      <dl>
-      <dt><h4>Webserver</h4>
-      <dd><p>The webserver handles the interface that you are interacting with right now. It handles processing and handling the database for end-user consumption. It is written in Python, Javascript, HTML, CSS, and uses JSON for data storage.</p>
-      <br>
-      <dt><h4>Scanner</h5>
-      <dd><p>The scanner does most of the work for {{brand}}. It scans for new tweets four times every day, and automatically fills in any holes in the database. The scanner also detects any deleted tweets and deleted accounts. </p>
-      <br>
-      <dt><h4>Streamer</h4>
-      <dd><p>The {{brand}} streamer is extremely fast. It pulls a stream of all the public figures' new tweets from Twitter, and archives the tweets into the database less than half a second after they are created. This allows {{brand}} to have <i>every</i><sup>*</sup> tweet, even those that only existed for one second before being deleted.</p>
-      </dl>
-      <br>
-      <h2>{{brand}} Team</h2>
-      <hr>
-      <p>The {{brand}} team is small. Contact the team here: <a href="mailto:secure@politiwatch.org">securely</a> or <a href="mailto:miles@politiwatch.org">normally</a>.</p>
-      <br><br>
-      <small><sup>*</sup>Unfortunately, due to Twitter's API design, not every tweet by the public figures is available (Twitter has a date cut-off).</small>
-  </div>
-  {% include "analytics.html" %}
-  </body>
-  </html>
+    {% include "navbar.html" %}
+    <div class="container main">
+        <div class="row">
+            <div class="container">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <h1>About {{brand}}</h1>
+                    <img src="static/assets/polititweet-logo.jpg" width="100%" height="auto" style="float: right;
+    width: 25%; margin-left: 50px;" alt="PolitiTweet monitors public (and primarily political) figures online, creating a stable and persistent database that can be referred to for news articles, citations, and other reference." />
+                    <hr>
+                    <p>{{brand}} is a <a href="//politiwatch.org" class="arvo">Politiwatch</a> initiative.</p>
+                    <p>{{brand}} monitors public (and primarily political) figures online, creating a stable and persistent database that can be referred to for news articles, citations, and other reference. It's also fun, because its <a href='/deleted'>deleted</a> section can read like a tabloid.</p>
+                    <p>One primary advantage of {{brand}} is that its database remains intact when, for example, a tweet is deleted (which <a href="https://twitter.com/realDonaldTrump">Donald Trump </a> does frequently).</p>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-sm-12 col-md-8 col-lg-8">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <h2>Infrastructure</h2>
+                    <hr>
+                    <p>The back-end {{brand}} database is managed by a Python daemon, is stored in JSON, and is stored in a filesystem. It is backed up weekly.</p>
+                    <p>The {{brand}} infrastructure has three parts: <strong>webserver</strong>, <strong>scanner</strong>, and <strong>streamer</strong>.</p>
+                    <p>Its servers are located in <strong>New York City</strong>.</p>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-4">
+                    <h4>Webserver <span class="glyphicon glyphicon-align-center"></span></h4>
+                    <p>The webserver handles the interface that you are interacting with right now. It handles processing and handling the database for end-user consumption. It is written in Python, Javascript, HTML, CSS, and uses JSON for data storage.</p>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-4">
+                    <h4>Scanner <span class="glyphicon glyphicon-search"></span></h4>
+                    <p>The scanner does most of the work for {{brand}}. It scans for new tweets four times every day, and automatically fills in any holes in the database. The scanner also detects any deleted tweets and deleted accounts. </p>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-4">
+                    <h4>Streamer <span class="glyphicon glyphicon-retweet"></span></h4>
+                    <p>The {{brand}} streamer is extremely fast. It pulls a stream of all the public figures' new tweets from Twitter, and archives the tweets into the database less than half a second after they are created. This allows {{brand}} to have <i>every</i><sup>*</sup> tweet, even those that only existed for one second before being deleted.</p>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-4 col-lg-4">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <h2>Database</h2>
+                    <hr>
+                    <p>{{brand}} monitors <strong>{{count}}</strong> public figures. Its database contains over <strong>one million</strong> tweets.</p>
+                </div>
+                <br>
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <h2>Advantages</h2>
+                    <hr>
+                    <ul>
+                        <li>Stable links that will not change, ideal for citing tweets in articles.</li>
+                        <li>In-depth statistics available about every figure and tweet.</li>
+                        <li>Historical figure data available.</li>
+                        <li>Tweets in the database persist, even when they are deleted from Twitter (often for being too contentious).</li>
+                        <li>Tweets are archived less than a second after they are created.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <h2>{{brand}} Team</h2>
+                <hr>
+                <p>The {{brand}} team is small. Contact the team here: <a href="mailto:secure@politiwatch.org">securely</a> or <a href="mailto:miles@politiwatch.org">normally</a>.</p>
+                <small><sup>*</sup>Unfortunately, due to Twitter's API design, not every tweet by the public figures is available (Twitter has a date cut-off).</small>
+            </div>
+        </div>
+    </div>
+    {% include "analytics.html" %}
+</body>
+
+</html>

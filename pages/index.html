@@ -1,113 +1,92 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <script
-  src = "https://code.jquery.com/jquery-3.1.1.min.js"
-  integrity = "sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-  crossorigin = "anonymous"></script>
-  <script src="static/js/jquery.json-viewer.js"></script>
-
-  <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
-  <link rel="icon"
-      type="image/png"
-      href="/static/assets/icon.png">
-
-  <meta name="description" content='Monitoring celebrities, politicians, and public figures, scanning for silent retractions and deleted tweets. See what they do not want you to see!'>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-
-
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-  <!-- Optional theme -->
-  <link rel="stylesheet" href="static/css/bootstrap.min.css">
-  <link href="static/css/jquery.json-viewer.css" rel="stylesheet">
-  <meta name="google-site-verification" content="cyi_LXJsUprjCX95bH4X5sL3Mw1qxoNY1QUqEFE9Koo" />
-  <title>{{brand}}: monitoring celebrities, politicians, and public figures, scanning for silent retractions and deleted tweets. See what they do not want you to see!</title>
-
-  <!-- Latest compiled and minified JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-  <meta name="viewport" content="initial-scale=1">
-  <style>
-  .main{
-    margin-top: 100px;
-  }
-  .profile-photo{
-    border-radius: 5px;
-  }
-  h1, h2, h3, h4, h5, h6{
-    display: inline;
-  }
-  .arvo{
-    font-family: 'Arvo', serif;
-  }
-  #logo{
-    height: 100px;
-  }
-  </style>
+    {% include "head.html" %}
+    <title>{{brand}}: monitoring celebrities, politicians, and public figures, scanning for silent retractions and deleted tweets. See what they do not want you to see!</title>
+    <meta name="description" content='Monitoring celebrities, politicians, and public figures, scanning for silent retractions and deleted tweets. See what they do not want you to see!'>
 </head>
-<body>
-  {% include "navbar.html" %}
-  <div class="container main">
-    <div class="jumbotron">
-      <h1><span class="arvo">{{brand}}</span></h1>
-      <p>Monitoring <strong>{{count}}</strong> celebrities, politicians, and public figures, scanning for silent retractions and deleted tweets. See what they don't want you to see.</p>
-      <hr>
-      <a href="figures" class="btn btn-primary">Explore the Database</a>
-      <div class="hidden-md hidden-lg">
-        <br>
-      </div>
-      <a href="deleted" class="btn btn-primary">Latest Deleted Tweets</a>
-      <div class="hidden-md hidden-lg">
-        <br>
-      </div>
-      <a href="https://twitter.com/{{brand}}Org" class="btn btn-primary">{{brand}} on Twitter</a>
 
-    </div>
-    <div class="row">
-      <div class="col-md-6">
-        <h2>Latest Deleted Tweets</h2>
-        <hr>
-        {% for status in deleted %}
-        <div class="tweet">
-          <div class="panel panel-default">
-            <div class="panel-body" style="overflow: hidden;">
-              <img style="border-radius: 5px;" src="{{status["user"]["profile_image_url"]}}"> <a href="/figure?account={{status["user"]["id"]}}"><strong>{{status["user"]["name"]}}</strong></a> <small>@{{status["user"]["screen_name"]}}</small><br>
-              <br><h4><span class="tweet-text">{% apply linkify %}{% raw status["text"] %}{% end %}</span></h4>
-              <p><i><small>{{status["created_at"]}}</small></i> <span class="label label-danger">DELETED</span> </p>&nbsp;<a href="tweet?account={{status["user"]["id"]}}&tweet={{status["id"]}}" class="btn btn-primary btn-xs">View Full Tweet</a>
+<body>
+    {% include "navbar.html" %}
+    <div class="container main">
+        <div class="jumbotron">
+            <div class="row">
+                <div class="container">
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                        <h1>{{brand}}</h1>
+                        <p>Monitoring <strong>{{count}}</strong> celebrities, politicians, and public figures, scanning for silent retractions and deleted tweets.</p> 
+                        <p>See what they don't want you to see!</p>
+                        <div class="btn-group" role="group" aria-label="Splash Buttons">
+                            <button type="button" class="btn btn-primary btn-block" onclick="location.href = '/figures';">Explore the Database <i class="glyphicon glyphicon-folder-open"></i></button>
+                            <button type="button" class="btn btn-info btn-block" onclick="location.href = '/deleted';">See Latest Tweets <i class="glyphicon glyphicon-eye-open"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 splash_form_container">
+                        <div class="splash_form_header">
+                            <h3>FIND TWEETS</h3>
+                        </div>    
+                        <div class="splash_form_search">
+                            <form role="search" class="splash_search_form">
+                                <div class="input-group add-on">
+                                    <input class="form-control lg-10" placeholder="Search @handles or topics..." name="find_data" id="find_data" type="text">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>    
+                        <div class="splash_stat_counter" align="center">
+                            <div class="row">
+                                <div class="col-xs-4 stat">
+                                    <p>1,000</p>
+                                    <small>Figures</small>
+                                </div>
+                                <div class="col-xs-4 stat">
+                                    <p>1,000</p>
+                                    <small>New Tweets</small>
+                                </div>
+                                <div class="col-xs-4 stat">
+                                    <p>1,000</p>
+                                    <small>Tweets Archived</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-        {% end %}
-        <a href="/deleted#tweet-{{len(deleted)}}" class="btn btn-md btn-success">More Deleted Tweets</a>
-      </div>
-      <div class="col-md-6">
-        <h2>The Importance</h2>
-        <hr>
-        <p style="font-size: 15px;">Nowadays, Twitter is one of the most direct ways that public figures communicate with their audience. Donald Trump's 2016 presidential campaign was fueled by his Twitter, and Donald Trump is not the only public figure who uses Twitter extensively.</p>
-        <p>Every single United States senator has a Twitter account, and almost every other public figure does as well. Twitter has become a mediator between public figures and the people, however Twitter is unstable. It allows for Tweets to be deleted (allowing for silent retractions of unpopular statements, such as some of Trump's derogatory remarks against women), and entire accounts (such as Anthony Weiner) have disappeared. Other controversial accounts, such as alt-right leader Richard Spencer and many other alt-right nationalists, have been taken down by Twitter.</p>
-        <p>{{brand}} solves this problem. Less than half a second after a tweet is created by a public figure, it is archived in {{brand}}'s database. It then is persistent: if it is deleted off Twitter, it is still in the database and can be viewed, cited, and shared. Entire terminated accounts can still exist within the database.</p>
-        <hr>
-        <br>
-        <h2>Latest Archived Tweets</h2>
-        <hr>
-        {% for status in latest[:8] %}
-        <div class="tweet">
-          <div class="panel panel-default">
-            <div class="panel-body" style="overflow: hidden;">
-              <img style="border-radius: 5px;" src="{{status["user"]["profile_image_url"]}}"> <a href="/figure?account={{status["user"]["id"]}}"><strong>{{status["user"]["name"]}}</strong></a> <small>@{{status["user"]["screen_name"]}}</small><br>
-              <br><h4><span class="tweet-text">{% apply linkify %}{% raw status["text"] %}{% end %}</span></h4>
-              <p><i><small>{{status["created_at"]}}</small></i></p>&nbsp;<a href="tweet?account={{status["user"]["id"]}}&tweet={{status["id"]}}" class="btn btn-primary btn-xs">View Full Tweet</a>
+        <div class="row">
+            <div class="container">
+            <h2>Latest Deleted Tweets</h2>
+            <hr> 
+            <!-- Set for loop for recently deleted tweets. Should be an even number, 2 or 4 suggested -->
+            {% for status in deleted[:2] %}
+                <div class="tweet">
+                    <div class="panel panel-default col-sm-12 col-md-6 col-lg-6">
+                        <div class="panel-body" style="overflow: hidden;">
+                            <img style="border-radius: 5px;" src="{{status["user"]["profile_image_url"]}}"> <a href="/figure?account={{status["user"]["id"]}}"><strong>{{status["user"]["name"]}}</strong></a> <small>@{{status["user"]["screen_name"]}}</small><br>
+                            <br><h4><span class="tweet-text">{% apply linkify %}{% raw status["text"] %}{% end %}</span></h4>
+                            <p><i><small>{{status["created_at"]}}</small></i> <span class="label label-danger">DELETED</span> </p>&nbsp;<a href="tweet?account={{status["user"]["id"]}}&tweet={{status["id"]}}" class="btn btn-primary btn-xs">View Full Tweet</a>
+                        </div>
+                    </div>
+            {% end %}
+                </div>
+                <div class="col-lg-12" style="margin-bottom:25px;">
+                    <p align="center"><a href="/deleted#tweet-{{len(deleted)}}" class="btn btn-md btn-info">More Deleted Tweets</a></p>
+                </div>
             </div>
-          </div>
         </div>
-        {% end %}
-      </div>
+        <hr>    
     </div>
-    <hr>
-    <footer>{{brand}} is a <a href="https://politiwatch.org" class="arvo">Politiwatch</a> initiative. More info available here: <a href="https://polititweet.org/about">about</a>.<br><br></footer>
-  </div>
-  {% include "analytics.html" %}
+
+    <footer class="navbar navbar-fixed-bottom">
+        <div class="container">
+            <p>{{brand}} is a <a href="https://politiwatch.org" class="arvo">Politiwatch</a> initiative. More info available here on our <a href="https://polititweet.org/about">About</a> page.</p>
+        </div>
+    </footer>
+    {% include "analytics.html" %}
 </body>
+
 </html>

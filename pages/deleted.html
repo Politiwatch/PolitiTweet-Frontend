@@ -1,49 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script
-  src = "https://code.jquery.com/jquery-3.1.1.min.js"
-  integrity = "sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-  crossorigin = "anonymous"></script>
-  <script src="static/js/jquery.json-viewer.js"></script>
-
-  <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
-  <link rel="icon"
-      type="image/png"
-      href="/static/assets/icon.png">
-
-
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-  <meta name="description" content='The latest deleted tweets from celebrities, politicians, and other public figures--including Donald Trump.'>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-  <!-- Optional theme -->
-  <link rel="stylesheet" href="static/css/bootstrap.min.css">
-  <link href="static/css/jquery.json-viewer.css" rel="stylesheet">
-  <title>{{brand}}: latest deleted tweets from politicians, celebrities, and public figures</title>
-
-  <!-- Latest compiled and minified JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-  <meta name="viewport" content="initial-scale=1">
-  <style>
-  .main{
-    margin-top: 100px;
-  }
-  .profile-photo{
-    border-radius: 5px;
-  }
-  h1, h2, h3, h4, h5, h6{
-    display: inline;
-  }
-  .arvo{
-    font-family: 'Arvo', serif;
-  }
-  #logo{
-    height: 100px;
-  }
-  </style>
+  {% include "head.html" %}
+  <title>{{brand}}: Latest Deleted Tweets</title>
 </head>
 <body>
   {% include "navbar.html" %}
