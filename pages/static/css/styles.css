@@ -17,6 +17,10 @@ body {
     background-color: rgba(255,255,255,.9);
 }
 
+.index {
+    padding: 0;
+}
+
 .jumbotron {
     background: transparent;
 }
